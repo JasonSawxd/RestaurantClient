@@ -1,7 +1,17 @@
+//Dependencias
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+
+//Componentes.
+import Ordenes from './components/pages/ordenes';
 
 function App() {
   return (
-    <h1 className=" text-3xl font-ligth">slint</h1>
+    <div>
+      <Routes>
+        <Route path="/" exact element={<Ordenes/>} />
+      </Routes>
+    </div>
   );
 }
 
