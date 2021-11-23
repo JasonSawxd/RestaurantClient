@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="md:flex min-h-screen">
     <Sidebar/>
-    <div className="md:w2/5 xl:w-1/5">
+    <div className="md:w2/5 xl:w-1/5 p-5">
     <Routes>
         <Route path="/" exact element={<Ordenes/>} />
         <Route path="/menu" exact element={<Menu/>} />
