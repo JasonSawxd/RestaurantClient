@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { FirebaseContext } from '../../firebase';
+
+import {useNavigate} from 'react-router-dom';
 
 const NuevoPlatillo = () => {
-
+  //Context con las operaciones de firebase.
+  const { firebase } = useContext(FirebaseContext);
+  //Hook para redireccionar
+  const navigete = useNavigate();
   //valores iniciales del formulario 
   const formik = useFormik({
     initialValues: {
@@ -27,7 +33,14 @@ const NuevoPlatillo = () => {
         .required('La descripcion es obligatoria')
     }),
     onSubmit: datos => {// prop para enviar los valores del formulario
-      console.log(datos);
+      try {
+        datos.existencia = true;
+        firebase.db.collection('productos').add(datos);
+        //Redireccionar.
+        navigete('/menu');
+      } catch (error) {
+        console.log(error);
+      }
     }
   })
   return (
@@ -50,7 +63,7 @@ const NuevoPlatillo = () => {
             </div>
             {formik.touched.nombre && formik.errors.nombre ?
               <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5" role="alert">
-              <p className="font-bold">Ocurrio un Error </p>
+                <p className="font-bold">Ocurrio un Error </p>
                 <p>{formik.errors.nombre}</p>
               </div> : null
             }
@@ -68,7 +81,7 @@ const NuevoPlatillo = () => {
             </div>
             {formik.touched.precio && formik.errors.precio ?
               <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5" role="alert">
-              <p className="font-bold">Ocurrio un Error</p>
+                <p className="font-bold">Ocurrio un Error</p>
                 <p>{formik.errors.precio}</p>
               </div>
               : null}
@@ -91,7 +104,7 @@ const NuevoPlatillo = () => {
             </div>
             {formik.touched.categoria && formik.errors.categoria ?
               <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5" role="alert">
-              <p className="font-bold">Ocurrio un Error</p>
+                <p className="font-bold">Ocurrio un Error</p>
                 <p>{formik.errors.categoria}</p>
               </div> : null
             }
@@ -115,11 +128,11 @@ const NuevoPlatillo = () => {
                 onBlur={formik.handleBlur}
               ></textarea>
             </div>
-            {formik.touched.detalle && formik.errors.detalle?
-            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5" role="alert">
-              <p className="font-bold">Ocurrio un Error</p>
-              <p>{formik.errors.detalle}</p>
-            </div>: null
+            {formik.touched.detalle && formik.errors.detalle ?
+              <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-5" role="alert">
+                <p className="font-bold">Ocurrio un Error</p>
+                <p>{formik.errors.detalle}</p>
+              </div> : null
             }
             <input className="bg-gray-800 hover:bg-gray-900 w-full mt-5 p-2 text-white uppercase font-bold rounded-xl"
               type="submit"
